@@ -1,0 +1,97 @@
+---
+title: "R Notebook for Data Science - Excercise 5 R and Julia"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+authot: 'Stefan Schultz, Matrikelnummer : 190279, TH LÃƒÂ¼beck'
+---
+
+# 1. Download Rstudio & R
+
+# 2. Use Rstudio(Posit) to create rmarkdown file
+
+```{r setup, include=FALSE}
+print("Hello World!")
+```
+
+## download package ggplot2
+- Installation des Packages kann über das Menü "Tools > Install Paclages..." und Eingabe des Package-Namens mit Klick auf Install, sowie Angabe des Installationsverzeichnisses installiert werden.
+
+## import the data("iris")
+- Herunterladen des Datensets von Iris „Iris.csv“ von kaggle und Speicherung auf lokaler Festplatte.
+- Laden der CSV-Datei mit der Library „readr“.
+- Ausgabe der Klasse und der Spaltennamen
+
+```{r}
+# use library readr for loading csv data from file.
+library(readr)
+
+# load Iris data set from csv file
+Iris <- read.csv('./input/Iris.csv')
+
+# output class name
+print(class(Iris))
+
+# print head of Iris class (column names)
+head(Iris)
+```
+```{r}
+summary(Iris)
+```
+
+
+## use the ggplot for all the tasks below
+- Verwendung der Libarary "ggplot2" durch Einbindung von library('ggplot2')
+
+```{r}
+library(ggplot2)
+```
+
+
+## make a scatter plot with x-axis: Sepal.Length and y-axis: Sepal.Width, and the species should be shown in different colors
+
+```{r}
+ggplot(data=Iris, aes(x=SepalLengthCm, y=SepalWidthCm, color=Species)) + geom_point() + theme_minimal()
+```
+
+
+## add regression line for the previous plot with the whole dataset (regardless of the species)
+
+```{r}
+ggplot(data=Iris, aes(x=SepalLengthCm, y=SepalWidthCm, color=Species)) + geom_point() + geom_smooth(method = lm) + theme_minimal()
+```
+
+
+## calculate the Pearson correlation for this plot
+
+```{r}
+# ggplot(data=Iris, aes(x=SepalLengthCm, y=SepalWidthCm, color=Species)) + geom_point() + geom_smooth(method = lm) + theme_minimal() + sm_statCorr()
+```
+
+
+## make the boxplot for Petal.Width with 3 species separately in the x-axis in different colors
+
+```{r}
+options(repr.plot.width = 5, repr.plot.height = 4)
+
+ggplot(data=Iris, aes(x=Species, y=PetalWidthCm, color=Species)) + geom_boxplot() + theme_minimal() + theme(legend.position="none")
+```
+
+## make the histogram for Petal.Width with 3 species separately in x-axis in different colors
+
+```{r}
+ggplot(data=Iris,aes(x=SepalWidthCm)) + geom_histogram(binwidth=0.1) +theme_minimal()
+```
+
+## run the t-test of Petal.Width between setosa and virginica, and give the conclusion if the width is a statistically significant difference between 2 species
+
+```{r}
+# Subsets aufbauen, mit Filterung nach den Species-Bezeichnungen
+Setosa <- subset(Iris, Species == "Iris-setosa")
+Virginica <- subset(Iris, Species == "Iris-virginica")
+
+# test ausführen
+t.test(Setosa$PetalWidthCm, Virginica$PetalWidthCm)
+```
+
